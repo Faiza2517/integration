@@ -59,3 +59,23 @@ export const getProductList = async () => {
         throw error;
     }
 };
+//fetch the oder list
+export const getOrderList = async () => {
+    try {
+        const response = await axiosinstance.get("orders");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching order list:", error);
+        throw error;
+    }
+};
+//add the order
+export const addOrder = async (orderData) => {
+    try {
+        const response = await axiosinstance.post("orders", orderData);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding order:", error.response ? error.response.data : error.message);
+        throw error;
+    }
+};

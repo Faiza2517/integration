@@ -9,6 +9,9 @@ import {Login} from "./pages/sign-in";
 import Profile from "./pages/profile";
 import EditProfilePage from "./pages/editprofile";
 import Products from "./pages/product";
+import Orders from "./pages/orderlist";
+import OrderForm from "./pages/addorder";
+import OrderList from "./pages/addorder";
 
 function App() {
   return (
@@ -31,6 +34,12 @@ function App() {
              </AuthContext.Consumer>} />
              <Route path="/Products" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(Products)}
+             </AuthContext.Consumer>} />
+             <Route path="/Orders" element={<AuthContext.Consumer>
+                 {({ requireAuth }) => requireAuth(Orders)}
+             </AuthContext.Consumer>} />
+             <Route path="/OrderList" element={<AuthContext.Consumer>
+                 {({ requireAuth }) => requireAuth(OrderList)}
              </AuthContext.Consumer>} />
          </Routes>
        </div>

@@ -10,7 +10,6 @@ const ProfilePage = () => {
         date_of_birth: '',
     });
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
         const getUserData = async () => {
@@ -25,8 +24,6 @@ const ProfilePage = () => {
             } catch (err) {
                 console.error("Failed to fetch user data:", err);
                 setError(`An error occurred: ${err.message}`);
-            } finally {
-                setLoading(false); // Set loading to false after data fetching is done
             }
         };
 
