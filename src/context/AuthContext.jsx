@@ -40,8 +40,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setUser(null);
-        removeToken(); // Only remove the token when the user explicitly logs out
-        navigate('/Login'); // Redirect to the Login page after logout
+        removeToken();
+        navigate('/Login');
     };
 
     const requireAuth = (Component) => {

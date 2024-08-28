@@ -1,36 +1,59 @@
-import React, { useState } from 'react';
-import { updateUserData, fetchUserData } from '../services/api'; // Adjust the path as needed
+// EditProfilePage.js
+import React, { useEffect, useState } from 'react';
+import { fetchUserData, updateUserData } from '../services/api';
+import {useNavigate} from "react-router-dom";
 
-const EditProfile = () => {
-    const [profile, setProfile] = useState({
+const EditProfilePage = () => {
+    const navigate = useNavigate();
+    const [userData, setUserData] = useState({
         name: '',
         email: '',
         password: '',
-        dateOfBirth: '',
+        date_of_birth: '',
     });
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
 
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const data = await fetchUserData();
+                console.log('Fetched user data:', data);
+                if (data && data.user) {
+                    setUserData(data.user);
+                } else {
+                    setError("Failed to load user data.");
+                }
+            } catch (err) {
+                console.error("Failed to fetch user data:", err);
+                setError(`An error occurred: ${err.message}`);
+            }
+        };
+
+        getUserData();
+    }, []);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
-        setProfile(prevState => ({
-            ...prevState,
+        setUserData(prevProfile => ({
+            ...prevProfile,
             [id]: value
         }));
     };
 
     const handleSubmit = async () => {
         try {
-            const updatedData = await updateUserData(fetchUserData);
-            console.log("User data updated successfully:", updatedData);
-            // Handle success, e.g., show a success message or redirect
+            const token = localStorage.getItem('token');
+            await updateUserData(userData, token);
+            console.log("User data updated successfully");
+           navigate('/profile');
         } catch (error) {
             setError('Failed to update user data.');
         }
     };
 
     return (
-        <div className="container">
+        <div className="container py-5">
             <div className="card">
                 <div className="card-header">
                     <h3 className="card-title">Edit Profile</h3>
@@ -42,15 +65,14 @@ const EditProfile = () => {
                                 <div className="mb-20">
                                     <label
                                         htmlFor="name"
-                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                    >
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8">
                                         Full Name <span className="text-danger-600">*</span>
                                     </label>
                                     <input
                                         type="text"
                                         className="form-control radius-8"
                                         id="name"
-                                        value={profile.name}
+                                        value={userData.name}
                                         onChange={handleChange}
                                         placeholder="Enter Full Name"
                                     />
@@ -68,7 +90,7 @@ const EditProfile = () => {
                                         type="email"
                                         className="form-control radius-8"
                                         id="email"
-                                        value={profile.email}
+                                        value={userData.email}
                                         onChange={handleChange}
                                         placeholder="Enter email address"
                                     />
@@ -86,7 +108,7 @@ const EditProfile = () => {
                                         type="password"
                                         className="form-control radius-8"
                                         id="password"
-                                        value={profile.password}
+                                        value={userData.password}
                                         onChange={handleChange}
                                         placeholder="Enter password"
                                     />
@@ -95,7 +117,7 @@ const EditProfile = () => {
                             <div className="col-sm-6">
                                 <div className="mb-20">
                                     <label
-                                        htmlFor="dateOfBirth"
+                                        htmlFor="date_of_birth"
                                         className="form-label fw-semibold text-primary-light text-sm mb-8"
                                     >
                                         Date of Birth
@@ -103,21 +125,15 @@ const EditProfile = () => {
                                     <input
                                         type="date"
                                         className="form-control radius-8"
-                                        id="dateOfBirth"
-                                        value={profile.dateOfBirth}
+                                        id="date_of_birth"
+                                        value={userData.date_of_birth}
                                         onChange={handleChange}
                                         placeholder="Enter Date of Birth"
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div className="d-flex align-items-center justify-content-center gap-3">
-                            <button
-                                type="button"
-                                className="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
-                            >
-                                Cancel
-                            </button>
+                        <div className="d-flex align-items-center justify-content-center gap-3 mt-4">
                             <button
                                 type="button"
                                 className="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
@@ -134,4 +150,4 @@ const EditProfile = () => {
     );
 };
 
-export default EditProfile;
+export default EditProfilePage;

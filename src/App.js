@@ -7,7 +7,7 @@ import {Navbar} from "./component/Navbar";
 import {SignUp} from "./pages/sign-up";
 import {Login} from "./pages/sign-in";
 import Profile from "./pages/profile";
-import EditProfile from "./pages/edit-profile";
+import EditProfilePage from "./pages/editprofile";
 
 function App() {
   return (
@@ -25,10 +25,9 @@ function App() {
              <Route path="/Profile" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(Profile)}
              </AuthContext.Consumer>} />
-             <Route path="/EditProfile" element={<AuthContext.Consumer>
-                 {({ requireAuth }) => requireAuth(EditProfile)}
+             <Route path="/EditProfilePage" element={<AuthContext.Consumer>
+                 {({ requireAuth }) => requireAuth(EditProfilePage)}
              </AuthContext.Consumer>} />
-
          </Routes>
        </div>
      </AuthProvider>

@@ -1,11 +1,15 @@
+// ProfilePage.js
 import React, { useEffect, useState } from 'react';
 import { fetchUserData } from '../services/api';
-import {useNavigate} from "react-router-dom";
+import { Link } from 'react-router-dom';
+import EditProfilePage from "./editprofile"; // Assuming you're using react-router-dom for routing
 
-
-const Profile = () => {
-    const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
+const ProfilePage = () => {
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        date_of_birth: '',
+    });
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -31,22 +35,19 @@ const Profile = () => {
         return <div className="alert alert-danger mt-5">{error}</div>;
     }
 
-    const handleEdit=()=>{
-        navigate('/EditProfile')
-    }
     return (
-        <div className="container" style={{width:'50%',marginTop:'100px'}}>
+        <div className="container" style={{ width: '50%', marginTop: '100px' }}>
             {userData ? (
-
                 <div className="card">
                     <div className="card-header d-flex justify-content-between">
-                        <h2>Profile</h2>
-                        <button className='btn' onClick={handleEdit} >Edit</button>
+                        <h2 className="mt-3">Profile</h2>
+                        <Link to="/EditProfilePage" className="btn btn-primary mt-3">Edit Profile</Link>
                     </div>
                     <div className="card-body py-4">
                         <h3 className="card-title text-center">Welcome, {userData.name}</h3>
                         <p className="card-text text-center">Email: {userData.email}</p>
                         <p className="card-text text-center">Date of Birth: {userData.date_of_birth}</p>
+
                     </div>
                 </div>
             ) : (
@@ -56,4 +57,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default ProfilePage;
