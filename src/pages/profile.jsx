@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserData } from '../services/api';
+import {useNavigate} from "react-router-dom";
 
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -29,6 +31,9 @@ const Profile = () => {
         return <div className="alert alert-danger mt-5">{error}</div>;
     }
 
+    const handleEdit=()=>{
+        navigate('/EditProfile')
+    }
     return (
         <div className="container" style={{width:'50%',marginTop:'100px'}}>
             {userData ? (
@@ -36,7 +41,7 @@ const Profile = () => {
                 <div className="card">
                     <div className="card-header d-flex justify-content-between">
                         <h2>Profile</h2>
-                        <button className='btn'>Edit</button>
+                        <button className='btn' onClick={handleEdit} >Edit</button>
                     </div>
                     <div className="card-body py-4">
                         <h3 className="card-title text-center">Welcome, {userData.name}</h3>

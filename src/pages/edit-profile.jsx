@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { updateUserData } from '../services/api'; // Adjust the path as needed
+import { updateUserData, fetchUserData } from '../services/api'; // Adjust the path as needed
 
 const EditProfile = () => {
     const [profile, setProfile] = useState({
         name: '',
         email: '',
         password: '',
-        dateOfBirth:'',
+        dateOfBirth: '',
     });
     const [error, setError] = useState('');
+
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -20,7 +21,7 @@ const EditProfile = () => {
 
     const handleSubmit = async () => {
         try {
-            const updatedData = await updateUserData(profile);
+            const updatedData = await updateUserData(fetchUserData);
             console.log("User data updated successfully:", updatedData);
             // Handle success, e.g., show a success message or redirect
         } catch (error) {
@@ -39,9 +40,12 @@ const EditProfile = () => {
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="mb-20">
-                                    <label htmlFor="name"
-                                           className="form-label fw-semibold text-primary-light text-sm mb-8">Full
-                                        Name <span className="text-danger-600">*</span></label>
+                                    <label
+                                        htmlFor="name"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Full Name <span className="text-danger-600">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         className="form-control radius-8"
@@ -54,9 +58,12 @@ const EditProfile = () => {
                             </div>
                             <div className="col-sm-6">
                                 <div className="mb-20">
-                                    <label htmlFor="email"
-                                           className="form-label fw-semibold text-primary-light text-sm mb-8">Email <span
-                                        className="text-danger-600">*</span></label>
+                                    <label
+                                        htmlFor="email"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Email <span className="text-danger-600">*</span>
+                                    </label>
                                     <input
                                         type="email"
                                         className="form-control radius-8"
@@ -69,13 +76,17 @@ const EditProfile = () => {
                             </div>
                             <div className="col-sm-6">
                                 <div className="mb-20">
-                                    <label htmlFor="pwd"
-                                           className="form-label fw-semibold text-primary-light text-sm mb-8">Password</label>
+                                    <label
+                                        htmlFor="password"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Password
+                                    </label>
                                     <input
-                                        type="pwd"
+                                        type="password"
                                         className="form-control radius-8"
                                         id="password"
-                                        value={profile.number}
+                                        value={profile.password}
                                         onChange={handleChange}
                                         placeholder="Enter password"
                                     />
@@ -83,33 +94,37 @@ const EditProfile = () => {
                             </div>
                             <div className="col-sm-6">
                                 <div className="mb-20">
-                                    <label htmlFor="dob"
-                                           className="form-label fw-semibold text-primary-light text-sm mb-8">Date of Birth</label>
+                                    <label
+                                        htmlFor="dateOfBirth"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Date of Birth
+                                    </label>
                                     <input
-                                        type="dob"
+                                        type="date"
                                         className="form-control radius-8"
-                                        id="dob"
+                                        id="dateOfBirth"
                                         value={profile.dateOfBirth}
                                         onChange={handleChange}
-                                        placeholder="Enter date of Birth"
+                                        placeholder="Enter Date of Birth"
                                     />
                                 </div>
                             </div>
-                            <div className="d-flex align-items-center justify-content-center gap-3">
-                                <button
-                                    type="button"
-                                    className="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
-                                    onClick={handleSubmit}
+                        </div>
+                        <div className="d-flex align-items-center justify-content-center gap-3">
+                            <button
+                                type="button"
+                                className="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
+                                onClick={handleSubmit}
                             >
                                 Save
                             </button>
-                        </div>
                         </div>
                     </form>
                 </div>

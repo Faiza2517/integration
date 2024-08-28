@@ -25,7 +25,7 @@ function App() {
              <Route path="/Profile" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(Profile)}
              </AuthContext.Consumer>} />
-             <Route path="/Profile" element={<AuthContext.Consumer>
+             <Route path="/EditProfile" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(EditProfile)}
              </AuthContext.Consumer>} />
 
