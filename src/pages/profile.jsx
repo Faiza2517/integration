@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchUserData } from '../services/api';
 import { Link } from 'react-router-dom';
 
+
 const ProfilePage = () => {
     const [userData, setUserData] = useState({
         name: '',
@@ -38,13 +39,6 @@ const ProfilePage = () => {
 
     return (
         <div className="container" style={{ width: '50%', marginTop: '100px' }}>
-            {loading ? ( // Display spinner while loading
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="spinner-border text-info" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-            ) : (
                 <div className="card">
                     <div className="card-header d-flex justify-content-between">
                         <h2 className="mt-3">Profile</h2>
@@ -56,7 +50,6 @@ const ProfilePage = () => {
                         <p className="card-text text-center">Date of Birth: {userData.date_of_birth}</p>
                     </div>
                 </div>
-            )}
         </div>
     );
 };

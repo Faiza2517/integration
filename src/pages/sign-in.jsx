@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { LoginUser } from "../services/api";
+import { Spinner } from 'react-bootstrap';
 import { AuthContext } from "../context/AuthContext";
 
 
@@ -12,6 +13,7 @@ export const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const userData = { email, password };
 
         try {
@@ -24,6 +26,7 @@ export const Login = () => {
                 console.log("User Login:", response);
             }
         } catch (err) {
+            setLoading(false);
             console.error("Login failed:", err);
             setError('Failed to login. Please check your credentials.');
         }
@@ -60,7 +63,17 @@ export const Login = () => {
                                            onChange={(e) => setPassword(e.target.value)}/>
                                 </div>
                                 {error && <div className="alert alert-danger">{error}</div>}
-                                <button type="submit" name="register" className="btn btn-primary btn-block">Login</button>
+                                <button type="submit" className="btn btn-primary" disabled={loading}>
+                                    {loading ? (
+                                        <>
+                                            <Spinner as="span" animation="border" size="sm" role="status"
+                                                     aria-hidden="true"/>
+                                            {' '}Signing In...
+                                        </>
+                                    ) : (
+                                        "Sign In"
+                                    )}
+                                </button>
                             </form>
                         </div>
                     </div>

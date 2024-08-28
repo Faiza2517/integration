@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserData, updateUserData } from '../services/api';
-import {useNavigate} from "react-router-dom";
+import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const EditProfilePage = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const EditProfilePage = () => {
         date_of_birth: '',
     });
     const [error, setError] = useState(null);
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getUserData = async () => {
@@ -40,14 +41,18 @@ const EditProfilePage = () => {
         }));
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        setLoading(true); // Set loading state to true when the form is submitted
         try {
             const token = localStorage.getItem('token');
             await updateUserData(userData, token);
             console.log("User data updated successfully");
-           navigate('/profile');
+            navigate('/profile');
         } catch (error) {
             setError('Failed to update user data.');
+        } finally {
+            setLoading(false); // Reset loading state after submission
         }
     };
 
@@ -58,7 +63,7 @@ const EditProfilePage = () => {
                     <h3 className="card-title">Edit Profile</h3>
                 </div>
                 <div className="card-body">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="mb-20">
@@ -133,12 +138,15 @@ const EditProfilePage = () => {
                             </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-center gap-3 mt-4">
-                            <button
-                                type="button"
-                                className="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
-                                onClick={handleSubmit}
-                            >
-                                Save
+                            <button type="submit" className="btn btn-primary" disabled={loading}>
+                                {loading ? (
+                                    <>
+                                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                        {' '}Saving...
+                                    </>
+                                ) : (
+                                    "Save"
+                                )}
                             </button>
                         </div>
                     </form>
