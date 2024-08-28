@@ -1,4 +1,3 @@
-// EditProfilePage.js
 import React, { useEffect, useState } from 'react';
 import { fetchUserData, updateUserData } from '../services/api';
 import {useNavigate} from "react-router-dom";

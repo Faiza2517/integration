@@ -1,8 +1,6 @@
-// ProfilePage.js
 import React, { useEffect, useState } from 'react';
 import { fetchUserData } from '../services/api';
 import { Link } from 'react-router-dom';
-import EditProfilePage from "./editprofile"; // Assuming you're using react-router-dom for routing
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({
@@ -11,6 +9,7 @@ const ProfilePage = () => {
         date_of_birth: '',
     });
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
         const getUserData = async () => {
@@ -25,6 +24,8 @@ const ProfilePage = () => {
             } catch (err) {
                 console.error("Failed to fetch user data:", err);
                 setError(`An error occurred: ${err.message}`);
+            } finally {
+                setLoading(false); // Set loading to false after data fetching is done
             }
         };
 
@@ -37,7 +38,13 @@ const ProfilePage = () => {
 
     return (
         <div className="container" style={{ width: '50%', marginTop: '100px' }}>
-            {userData ? (
+            {loading ? ( // Display spinner while loading
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="spinner-border text-info" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            ) : (
                 <div className="card">
                     <div className="card-header d-flex justify-content-between">
                         <h2 className="mt-3">Profile</h2>
@@ -47,11 +54,8 @@ const ProfilePage = () => {
                         <h3 className="card-title text-center">Welcome, {userData.name}</h3>
                         <p className="card-text text-center">Email: {userData.email}</p>
                         <p className="card-text text-center">Date of Birth: {userData.date_of_birth}</p>
-
                     </div>
                 </div>
-            ) : (
-                <p>Loading...</p>
             )}
         </div>
     );

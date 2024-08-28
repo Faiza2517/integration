@@ -8,6 +8,7 @@ import {SignUp} from "./pages/sign-up";
 import {Login} from "./pages/sign-in";
 import Profile from "./pages/profile";
 import EditProfilePage from "./pages/editprofile";
+import Products from "./pages/product";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
              </AuthContext.Consumer>} />
              <Route path="/EditProfilePage" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(EditProfilePage)}
+             </AuthContext.Consumer>} />
+             <Route path="/Products" element={<AuthContext.Consumer>
+                 {({ requireAuth }) => requireAuth(Products)}
              </AuthContext.Consumer>} />
          </Routes>
        </div>

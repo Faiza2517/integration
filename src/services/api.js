@@ -48,3 +48,14 @@ export const updateUserData = async (userData) => {
         throw error;
     }
 };
+
+//fetch the product list
+export const getProductList = async () => {
+    try {
+        const response = await axiosinstance.get("products");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product list:", error);
+        throw error;
+    }
+};

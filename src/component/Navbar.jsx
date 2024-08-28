@@ -17,6 +17,9 @@ export const Navbar = () => {
                         {user ? (
                             <>
                                 <li className="nav-item">
+                                    <Link className="nav-link" to="/Products">Products</Link>
+                                </li>
+                                <li className="nav-item">
                                     <Link className="nav-link" to="/Profile">Profile</Link>
                                 </li>
                                 <li className="nav-item">
