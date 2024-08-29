@@ -54,11 +54,29 @@ export const getProductList = async () => {
     try {
         const response = await axiosinstance.get("products");
         return response.data;
+
     } catch (error) {
         console.error("Error fetching product list:", error);
         throw error;
     }
 };
+//fetch the single product
+export const getProductDetail = async (id) => {
+    try {
+        const response = await axiosinstance.get(`products/${id}`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            // Log detailed error information
+            console.error("Error response:", error.response.data);
+            throw new Error(`Error: ${error.response.data.message || "Invalid request"}`);
+        } else {
+            console.error("Error fetching product detail:", error.message);
+            throw new Error("Failed to fetch product details.");
+        }
+    }
+};
+
 //fetch the oder list
 export const getOrderList = async () => {
     try {
@@ -69,6 +87,7 @@ export const getOrderList = async () => {
         throw error;
     }
 };
+
 //add the order
 export const addOrder = async (orderData) => {
     try {
@@ -77,5 +96,21 @@ export const addOrder = async (orderData) => {
     } catch (error) {
         console.error("Error adding order:", error.response ? error.response.data : error.message);
         throw error;
+    }
+};
+// fetch the order details
+export const getOrderDetail = async (id) => {
+    try {
+        const response = await axiosinstance.get(`orders/${id}`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            // Log detailed error information
+            console.error("Error response:", error.response.data);
+            throw new Error(`Error: ${error.response.data.message || "Invalid request"}`);
+        } else {
+            console.error("Error fetching orders detail:", error.message);
+            throw new Error("Failed to fetch orders details.");
+        }
     }
 };

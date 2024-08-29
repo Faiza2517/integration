@@ -1,15 +1,18 @@
 import { getProductList } from "../services/api";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const data = await getProductList();
+                console.log(data);
                 setProducts(data);
                 setLoading(false);
             } catch (err) {
@@ -25,6 +28,11 @@ const Products = () => {
         fetchProducts();
     }, []);
 
+    const handleProductClick = (id) => {
+        navigate(`/Product/${id}`);
+    };
+
+
     return (
         <div>
             <h2>Product List</h2>
@@ -37,7 +45,7 @@ const Products = () => {
             ) : (
                 <>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <table className="table table-striped mt-4">
+                    <table className="table table-striped table-bordered mt-4">
                         <thead>
                         <tr>
                             <th scope="col">Product Name</th>
@@ -49,7 +57,7 @@ const Products = () => {
                         </thead>
                         <tbody>
                         {products.map((product) => (
-                            <tr key={product.id}>
+                            <tr key={product.id} onClick={() => handleProductClick(product.id)}>
                                 <td>{product.name}</td>
                                 <td>
                                     <img

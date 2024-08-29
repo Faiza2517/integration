@@ -1,8 +1,9 @@
-import {getOrderList} from "../services/api";
+import { getOrderList } from "../services/api";
 import React, { useEffect, useState } from "react";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Orders = () => {
+    const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
 
@@ -23,23 +24,47 @@ const Orders = () => {
         fetchOrders();
     }, []);
 
+    const handleOrderClick = (id) => {
+        navigate(`/orders/${id}`);
+    };
+
     return (
         <div>
             <div className="d-flex justify-content-between">
-            <h2>Order List</h2>
-            <Link to="/OrderList" className="btn btn-primary mt-3">Add Order</Link>
+                <h2>Order List</h2>
+                <Link to="/OrderList" className="btn btn-primary mt-3">Add Order</Link>
             </div>
-                <>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <ul className='list-group mt-4'>
-                        {orders.map((order) => (
-                            <li key={order.id} className='list-group-item'>
-                                <h4>{order.quantity}</h4>
-                                <h4>{order.paymentMethod}</h4>
-                            </li>
-                        ))}
-                    </ul>
-                </>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <table className="table table-bordered mt-4">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Payment Method</th>
+                </tr>
+                </thead>
+                <tbody>
+                {orders.length > 0 ? (
+                    orders.map((order) => (
+                        <tr key={order.id}>
+                            <td>
+                                <Link to={`/orders/${order.id}`}>{order.id}</Link>
+                            </td>
+                            <td>{order.user_id}</td>
+                            <td>{order.quantity}</td>
+                            <td>{order.total_price}</td>
+                            <td>{order.payment_method}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="5">Loading...</td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
         </div>
     );
 };

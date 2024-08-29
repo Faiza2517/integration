@@ -10,8 +10,10 @@ import Profile from "./pages/profile";
 import EditProfilePage from "./pages/editprofile";
 import Products from "./pages/product";
 import Orders from "./pages/orderlist";
-import OrderForm from "./pages/addorder";
 import OrderList from "./pages/addorder";
+import Error from "./pages/error"
+import SingleProduct from "./pages/singleproduct";
+import OrderDetails from "./pages/oderdetail";
 
 function App() {
   return (
@@ -35,12 +37,19 @@ function App() {
              <Route path="/Products" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(Products)}
              </AuthContext.Consumer>} />
-             <Route path="/Orders" element={<AuthContext.Consumer>
+           <Route path="/Product/:id" element={<AuthContext.Consumer>
+             {({ requireAuth }) => requireAuth(SingleProduct)}
+           </AuthContext.Consumer>} />
+           <Route path="/Orders" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(Orders)}
              </AuthContext.Consumer>} />
+           <Route path="/Orders/:id" element={<AuthContext.Consumer>
+             {({ requireAuth }) => requireAuth(OrderDetails)}
+           </AuthContext.Consumer>} />
              <Route path="/OrderList" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(OrderList)}
              </AuthContext.Consumer>} />
+           <Route path="*" element={<Error />} />
          </Routes>
        </div>
      </AuthProvider>

@@ -16,18 +16,18 @@ export const Navbar = () => {
                     <ul className="navbar-nav ms-auto">
                         {user ? (
                             <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/Orders">Orders</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/Products">Products</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/Profile">Profile</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="#" onClick={logout}>Logout</Link>
-                                </li>
+                                <div className="btn-group">
+                                    <button type="button" className="btn btn-primary">Faiza Rasheed</button>
+                                    <button type="button" className="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span className="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul className="dropdown-menu">
+                                        <li><Link className="dropdown-item" to="/Orders">Orders</Link></li>
+                                        <li><Link className="dropdown-item" to="/Products">Products</Link></li>
+                                        <li><Link className="dropdown-item" to="/Profile">Profile</Link></li>
+                                        <li><Link className="dropdown-item"  to="#">Logout</Link></li>
+                                    </ul>
+                                </div>
                             </>
                         ) : (
                             <>
