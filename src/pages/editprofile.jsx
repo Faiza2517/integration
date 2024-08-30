@@ -10,6 +10,10 @@ const EditProfilePage = () => {
         email: '',
         password: '',
         date_of_birth: '',
+        country: 'pakistan',
+        city: '',
+        street: '',
+        zipcode: '',
     });
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -42,7 +46,7 @@ const EditProfilePage = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
+        e.preventDefault();
         setLoading(true); // Set loading state to true when the form is submitted
         try {
             const token = localStorage.getItem('token');
@@ -133,6 +137,78 @@ const EditProfilePage = () => {
                                         value={userData.date_of_birth}
                                         onChange={handleChange}
                                         placeholder="Enter Date of Birth"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="mb-20">
+                                    <label
+                                        htmlFor="country"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Country
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control radius-8"
+                                        id="country"
+                                        value={userData.country}
+                                        onChange={handleChange}
+                                        placeholder="Enter Country"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="mb-20">
+                                    <label
+                                        htmlFor="city"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        City
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control radius-8"
+                                        id="city"
+                                        value={userData.city}
+                                        onChange={handleChange}
+                                        placeholder="Enter City"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="mb-20">
+                                    <label
+                                        htmlFor="street"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Street
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control radius-8"
+                                        id="street"
+                                        value={userData.street}
+                                        onChange={handleChange}
+                                        placeholder="Enter Street"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="mb-20">
+                                    <label
+                                        htmlFor="zipcode"
+                                        className="form-label fw-semibold text-primary-light text-sm mb-8"
+                                    >
+                                        Zipcode
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control radius-8"
+                                        id="zipcode"
+                                        value={userData.zipcode}
+                                        onChange={handleChange}
+                                        placeholder="Enter Zipcode"
                                     />
                                 </div>
                             </div>

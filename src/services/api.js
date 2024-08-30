@@ -67,7 +67,6 @@ export const getProductDetail = async (id) => {
         return response.data;
     } catch (error) {
         if (error.response) {
-            // Log detailed error information
             console.error("Error response:", error.response.data);
             throw new Error(`Error: ${error.response.data.message || "Invalid request"}`);
         } else {
@@ -105,7 +104,6 @@ export const getOrderDetail = async (id) => {
         return response.data;
     } catch (error) {
         if (error.response) {
-            // Log detailed error information
             console.error("Error response:", error.response.data);
             throw new Error(`Error: ${error.response.data.message || "Invalid request"}`);
         } else {
