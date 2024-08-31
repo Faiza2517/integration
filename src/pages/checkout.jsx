@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchUserData } from "../services/api";
+import {useNavigate} from "react-router-dom";
 
 export const Checkout = () => {
+    const  navigate = useNavigate();
     const [creditCardDetails, setCreditCardDetails] = useState({
         cardNumber: '',
         expiryDate: '',
         cvv: '',
+    });
+    const [paypalDetails, setPaypalDetails] = useState({
+        email: '',
     });
     const [cartItems, setCartItems] = useState([]);
     const [userData, setUserData] = useState({
@@ -57,13 +62,23 @@ export const Checkout = () => {
                 ...prevData,
                 [name]: value,
             }));
-        } else {
+        } else if (name in userData.address) {
             setUserData(prevData => ({
                 ...prevData,
                 address: {
                     ...prevData.address,
                     [name]: value,
                 },
+            }));
+        } else if (name in creditCardDetails) {
+            setCreditCardDetails(prevData => ({
+                ...prevData,
+                [name]: value,
+            }));
+        } else if (name in paypalDetails) {
+            setPaypalDetails(prevData => ({
+                ...prevData,
+                [name]: value,
             }));
         }
     };
@@ -90,19 +105,22 @@ export const Checkout = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form Data Submitted:', userData);
+        // Handle form submission here
     };
 
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     };
+
     const handleRemoveItem = (itemId) => {
         setCartItems(cartItems.filter(item => item.id !== itemId));
         const updatedCart = cartItems.filter(item => item.id !== itemId);
-        sessionStorage.setItem('cartItems', JSON.stringify(updatedCart));
+        sessionStorage.setItem('selectedItems', JSON.stringify(updatedCart));
     };
 
     return (
         <div className="container mt-5">
+            <button className="btn btn-primary mb-4" onClick={() => navigate('/cart')}>Back to Cart</button>
             <div className="row">
                 {/* First Column: Checkout Form */}
                 <div className="col-lg-7">
@@ -111,7 +129,7 @@ export const Checkout = () => {
                             <h2>Checkout</h2>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={handleSubmit}>
+                            <form>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">Full Name:</label>
                                     <input
@@ -258,7 +276,7 @@ export const Checkout = () => {
                                         name="paymentMethod"
                                         id="creditCard"
                                         value="creditCard"
-                                        checked={creditCardDetails.paymentMethod === 'creditCard'}
+                                        checked={userData.paymentMethod === 'creditCard'}
                                         onChange={handlePaymentMethodChange}
                                     />
                                     <label className="form-check-label" htmlFor="creditCard">
@@ -272,7 +290,7 @@ export const Checkout = () => {
                                         name="paymentMethod"
                                         id="paypal"
                                         value="paypal"
-                                        checked={creditCardDetails.paymentMethod === 'paypal'}
+                                        checked={userData.paymentMethod === 'paypal'}
                                         onChange={handlePaymentMethodChange}
                                     />
                                     <label className="form-check-label" htmlFor="paypal">
@@ -280,14 +298,68 @@ export const Checkout = () => {
                                     </label>
                                 </div>
 
-                                {creditCardDetails.paymentMethod === 'creditCard' && (
+                                {userData.paymentMethod === 'creditCard' && (
                                     <div className="mt-2">
                                         <h4>Credit Card Details</h4>
-                                        {/* Credit Card Inputs Here */}
+                                        <div className="mb-3">
+                                            <label htmlFor="cardNumber" className="form-label">Card Number:</label>
+                                            <input
+                                                type="text"
+                                                id="cardNumber"
+                                                name="cardNumber"
+                                                className="form-control"
+                                                value={creditCardDetails.cardNumber}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="expiryDate" className="form-label">Expiry Date:</label>
+                                            <input
+                                                type="text"
+                                                id="expiryDate"
+                                                name="expiryDate"
+                                                className="form-control"
+                                                value={creditCardDetails.expiryDate}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="cvv" className="form-label">CVV:</label>
+                                            <input
+                                                type="text"
+                                                id="cvv"
+                                                name="cvv"
+                                                className="form-control"
+                                                value={creditCardDetails.cvv}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
                                     </div>
                                 )}
+
+                                {userData.paymentMethod === 'paypal' && (
+                                    <div className="mt-2">
+                                        <h4>PayPal Details</h4>
+                                        <div className="mb-3">
+                                            <label htmlFor="paypalEmail" className="form-label">PayPal Email:</label>
+                                            <input
+                                                type="email"
+                                                id="paypalEmail"
+                                                name="email"
+                                                className="form-control"
+                                                value={paypalDetails.email}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="py-4">
-                                    <button type="submit" className="btn btn-primary mt-4">
+                                    <button type="submit" className="btn btn-primary mt-4" onClick={handleSubmit}>
                                         Place Order
                                     </button>
                                 </div>

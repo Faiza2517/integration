@@ -31,6 +31,7 @@ const OrderDetail = () => {
         <div className="container mt-4">
             {error && <div className="alert alert-danger">{error}</div>}
             <button className="btn btn-primary mb-4" onClick={() => navigate('/Orders')}>Back to Orders</button>
+            <h3>Order Detail</h3>
             {loading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status">

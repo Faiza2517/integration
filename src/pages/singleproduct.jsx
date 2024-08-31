@@ -61,6 +61,7 @@ const SingleProduct = () => {
             <Button variant="primary" className="mb-4" onClick={() => navigate('/Products')}>
                 Back to Products
             </Button>
+            <h3>Product Detail</h3>
             {product && (
                 <div className="card" style={{ maxWidth: '18rem' }}>
                     <img src={product.image} className="card-img-top" alt={product.name} style={{ height: '200px' }} />
