@@ -22,10 +22,11 @@ export const Navbar = () => {
                                         <span className="visually-hidden">Toggle Dropdown</span>
                                     </button>
                                     <ul className="dropdown-menu">
+                                        <li><Link className="dropdown-item" to="/cart">Cart</Link></li>
                                         <li><Link className="dropdown-item" to="/Orders">Orders</Link></li>
                                         <li><Link className="dropdown-item" to="/Products">Products</Link></li>
                                         <li><Link className="dropdown-item" to="/Profile">Profile</Link></li>
-                                        <li><Link className="dropdown-item"  to="#" onClick={logout}>Logout</Link></li>
+                                        <li><Link className="dropdown-item" to="#" onClick={logout}>Logout</Link></li>
                                     </ul>
                                 </div>
                             </>

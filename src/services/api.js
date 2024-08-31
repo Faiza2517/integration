@@ -112,3 +112,13 @@ export const getOrderDetail = async (id) => {
         }
     }
 };
+//submit odder
+export const submitOrder = async (orderData) => {
+    try {
+        const response = await axiosinstance.post('orders', orderData);
+        return response.data;
+    } catch (error) {
+        console.error('Error submitting order:', error);
+        throw error;
+    }
+};

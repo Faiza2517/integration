@@ -14,6 +14,8 @@ import OrderList from "./pages/addorder";
 import Error from "./pages/error"
 import SingleProduct from "./pages/singleproduct";
 import OrderDetails from "./pages/oderdetail";
+import {Cart} from "./pages/cart";
+import {Checkout} from "./pages/checkout";
 
 function App() {
   return (
@@ -49,6 +51,12 @@ function App() {
              <Route path="/OrderList" element={<AuthContext.Consumer>
                  {({ requireAuth }) => requireAuth(OrderList)}
              </AuthContext.Consumer>} />
+           <Route path="/cart" element={<AuthContext.Consumer>
+             {({ requireAuth }) => requireAuth(Cart)}
+           </AuthContext.Consumer>} />
+           <Route path="/Checkout" element={<AuthContext.Consumer>
+             {({ requireAuth }) => requireAuth(Checkout)}
+           </AuthContext.Consumer>} />
            <Route path="*" element={<Error />} />
          </Routes>
        </div>
