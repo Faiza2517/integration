@@ -37,7 +37,16 @@ export const AuthProvider = ({ children }) => {
             console.error('Error decoding token on login', error);
         }
     };
-
+    const register = (token) => {
+        setToken(token); // Store the token in local storage
+        try {
+            const decodedToken = jwtDecode(token);
+            setUser(decodedToken);
+            navigate('/Profile'); // Navigate to the Profile page after login
+        } catch (error) {
+            console.error('Error decoding token on register', error);
+        }
+    };
     const logout = () => {
         setUser(null);
         removeToken();
@@ -53,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, requireAuth, preventAuthAccess }}>
+        <AuthContext.Provider value={{ user, login,register, logout, requireAuth, preventAuthAccess }}>
             {children}
         </AuthContext.Provider>
     );

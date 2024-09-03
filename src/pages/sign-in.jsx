@@ -13,7 +13,16 @@ export const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Basic validation to check if the fields are empty
+        if (!email || !password) {
+            setError('Email and password are required.');
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
+        setError(''); // Clear any previous errors
         const userData = { email, password };
 
         try {
@@ -26,9 +35,10 @@ export const Login = () => {
                 console.log("User Login:", response);
             }
         } catch (err) {
-            setLoading(false);
             console.error("Login failed:", err);
             setError('Failed to login. Please check your credentials.');
+        } finally {
+            setLoading(false);
         }
     };
 

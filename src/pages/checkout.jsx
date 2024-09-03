@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchUserData } from "../services/api";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';  // Import SweetAlert2
 
 export const Checkout = () => {
-    const  navigate = useNavigate();
+    const navigate = useNavigate();
     const [creditCardDetails, setCreditCardDetails] = useState({
         cardNumber: '',
         expiryDate: '',
@@ -28,7 +29,6 @@ export const Checkout = () => {
     });
     const [error, setError] = useState(null);
 
-    // Fetch user data and cart items
     useEffect(() => {
         const fetchUserDataAndCartItems = async () => {
             try {
@@ -38,6 +38,7 @@ export const Checkout = () => {
                     setUserData(prevData => ({
                         ...prevData,
                         ...userDataResponse.user,
+                        address: userDataResponse.user.address || prevData.address,
                     }));
                 } else {
                     setError("Failed to load user data.");
@@ -62,7 +63,7 @@ export const Checkout = () => {
                 ...prevData,
                 [name]: value,
             }));
-        } else if (name in userData.address) {
+        } else if (userData.address && name in userData.address) {
             setUserData(prevData => ({
                 ...prevData,
                 address: {
@@ -104,8 +105,59 @@ export const Checkout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form Data Submitted:', userData);
-        // Handle form submission here
+
+        const { name, email, address, paymentMethod } = userData;
+        const { cardNumber, expiryDate, cvv } = creditCardDetails;
+        const { email: paypalEmail } = paypalDetails;
+
+        let errorMessage = '';
+
+        if (!name || !email || !address.street || !address.city || !address.zipcode || !address.country) {
+            errorMessage = 'Please fill in all required fields.';
+        } else if (paymentMethod === 'creditCard' && (!cardNumber || !expiryDate || !cvv)) {
+            errorMessage = 'Please fill in all credit card details.';
+        } else if (paymentMethod === 'paypal' && !paypalEmail) {
+            errorMessage = 'Please fill in your PayPal email address.';
+        }
+
+        if (errorMessage) {
+            Swal.fire({
+                title: 'Validation Error',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return; // Prevent form submission
+        }
+
+        // If validation passes, show the confirmation dialog
+        Swal.fire({
+            title: 'Confirm Order',
+            text: "Are you sure you want to place this order?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, place order!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('Form Data Submitted:', userData);
+                sessionStorage.removeItem('selectedItems');
+                setCartItems([]);
+
+                Swal.fire(
+                    'Order Placed!',
+                    'Your order has been successfully placed.',
+                    'success'
+                );
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelled',
+                    'Your order has not been placed.',
+                    'error'
+                );
+            }
+        });
     };
 
     const calculateTotal = () => {
@@ -123,13 +175,13 @@ export const Checkout = () => {
             <button className="btn btn-primary mb-4" onClick={() => navigate('/cart')}>Back to Cart</button>
             <div className="row">
                 {/* First Column: Checkout Form */}
-                <div className="col-lg-7">
+                <div className="col-lg-6">
                     <div className="card">
                         <div className="card-header">
                             <h2>Checkout</h2>
                         </div>
                         <div className="card-body">
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">Full Name:</label>
                                     <input
@@ -161,7 +213,7 @@ export const Checkout = () => {
                                         id="street"
                                         name="street"
                                         className="form-control"
-                                        value={userData.address.street}
+                                        value={userData.address?.street || ''}
                                         onChange={handleChange}
                                         required
                                     />
@@ -173,7 +225,7 @@ export const Checkout = () => {
                                         id="city"
                                         name="city"
                                         className="form-control"
-                                        value={userData.address.city}
+                                        value={userData.address?.city || ''}
                                         onChange={handleChange}
                                         required
                                     />
@@ -185,7 +237,7 @@ export const Checkout = () => {
                                         id="zipcode"
                                         name="zipcode"
                                         className="form-control"
-                                        value={userData.address.zipcode}
+                                        value={userData.address?.zipcode || ''}
                                         onChange={handleChange}
                                         required
                                     />
@@ -197,7 +249,7 @@ export const Checkout = () => {
                                         id="country"
                                         name="country"
                                         className="form-control"
-                                        value={userData.address.country}
+                                        value={userData.address?.country || ''}
                                         onChange={handleChange}
                                         required
                                     />
@@ -208,7 +260,7 @@ export const Checkout = () => {
                 </div>
 
                 {/* Second Column: Review Your Cart */}
-                <div className="col-lg-5">
+                <div className="col-lg-6">
                     <div className="card">
                         <div className="card-header">
                             <h2>Review Your Cart</h2>
